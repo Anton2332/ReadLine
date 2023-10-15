@@ -1,0 +1,53 @@
+{
+  "name": "@read-line/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "load:env": "bash load-env.sh",
+    "prebuild": "yarn load:env",
+    "predev": "APP_ENV=development yarn load:env",
+    "dev": "yarn check:env && next dev",
+    "build": "yarn check:env && next build",
+    "start": "next start",
+    "lint": "yarn check:env && next lint",
+    "check:env": "node ./check-env.js"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@hookform/resolvers": "^2.9.11",
+    "@mui/material": "^5.10.8",
+    "@next/font": "13.1.6",
+    "@types/node": "18.13.0",
+    "@types/react": "18.2.24",
+    "@types/react-dom": "18.2.8",
+    "axios": "^0.27.2",
+    "cookies-next": "^2.1.1",
+    "dotenv": "^16.0.3",
+    "eslint": "8.50.0",
+    "eslint-config-next": "13.5.4",
+    "joi": "^17.6.0",
+    "lodash": "^4.17.21",
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.1",
+    "react-hot-toast": "^2.4.0",
+    "react-intersection-observer": "^9.5.2",
+    "react-query": "^3.39.3",
+    "react-scripts": "5.0.0",
+    "styled-components": "^5.3.5",
+    "typescript": "4.9.5",
+    "uuid": "^9.0.0",
+    "web-vitals": "^2.1.2"
+  },
+  "devDependencies": {
+    "@iconify/react": "^3.2.1",
+    "@types/axios": "^0.14.0",
+    "@types/lodash": "^4.14.191",
+    "@types/qs": "^6.9.7",
+    "@types/react-modal": "^3.12.1",
+    "@types/styled-components": "^5.1.14",
+    "@types/uuid": "^9.0.1"
+  }
+}
