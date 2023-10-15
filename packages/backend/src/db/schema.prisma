@@ -48,7 +48,7 @@ enum fileType {
 
 model user {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  nickname  String
+  nickname  String   @default("Nickname")
   avatar    String?
   email     String   @unique
   password  String

@@ -7,5 +7,4 @@ export interface IJWTPayload {
   email?: string;
   password?: string;
   role?: string;
-  invitedBy?: string;
 }
