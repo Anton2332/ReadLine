@@ -112,8 +112,9 @@ model product {
 
   titleByLanguage titleByLanguage[]
 
-  filePath filePath[]
-  chapter  chapter[]
+  filePath       filePath[]
+  chapter        chapter[]
+  viewingHistory viewingHistory[]
 }
 
 model genre {
@@ -197,8 +198,7 @@ model chapter {
   languageId String   @map("language_id") @db.ObjectId
   language   language @relation(fields: [languageId], references: [id])
 
-  history        history[]
-  viewingHistory viewingHistory[]
+  history history[]
 
   @@unique([productId, seasonNumber, numberInSeason])
   @@unique([productId, chapterNumber])
@@ -228,8 +228,8 @@ model viewingHistory {
   userId String? @map("user_id") @db.ObjectId
   user   user?   @relation(fields: [userId], references: [id])
 
-  productId String?  @map("chapter_id") @db.ObjectId
-  product   chapter? @relation(fields: [productId], references: [id])
+  productId String  @map("chapter_id") @db.ObjectId
+  product   product @relation(fields: [productId], references: [id])
 
   @@map("viewing_history")
 }
