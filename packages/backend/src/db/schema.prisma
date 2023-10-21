@@ -55,7 +55,9 @@ model user {
   role      UserRole @default(USER)
   createdAt DateTime @default(now()) @map("created_at")
 
-  userToGroup userToGroup[]
+  userToGroup    userToGroup[]
+  history        history[]
+  viewingHistory viewingHistory[]
 
   @@map("users")
 }
@@ -195,7 +197,8 @@ model chapter {
   languageId String   @map("language_id") @db.ObjectId
   language   language @relation(fields: [languageId], references: [id])
 
-  history history[]
+  history        history[]
+  viewingHistory viewingHistory[]
 
   @@unique([productId, seasonNumber, numberInSeason])
   @@unique([productId, chapterNumber])
@@ -204,6 +207,10 @@ model chapter {
 model history {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now()) @map("created_at")
+  userIp    String   @map("user_ip")
+
+  userId String? @map("user_id") @db.ObjectId
+  user   user?   @relation(fields: [userId], references: [id])
 
   chapterId String?  @map("chapter_id") @db.ObjectId
   chapter   chapter? @relation(fields: [chapterId], references: [id])
@@ -211,4 +218,18 @@ model history {
   fileId     String?   @map("file_id") @db.ObjectId
   file       filePath? @relation(fields: [fileId], references: [id])
   pageNumber Int?
+}
+
+model viewingHistory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+  userIp    String   @map("user_ip")
+
+  userId String? @map("user_id") @db.ObjectId
+  user   user?   @relation(fields: [userId], references: [id])
+
+  productId String?  @map("chapter_id") @db.ObjectId
+  product   chapter? @relation(fields: [productId], references: [id])
+
+  @@map("viewing_history")
 }
