@@ -1,10 +1,13 @@
-import { Body, Controller, Get, Logger, Post, Req, Res, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { CookieOptions, Request, Response } from 'express';
 import { RegisterRequestDto } from './dtos/register-request.dto';
 import { COOKIE_TOKEN_KEY } from '../common/constants';
 import { LoginRequestDto } from './dtos/login-request.dto';
 import { AllExceptionFilter, HttpExceptionFilter } from '../common/filters';
 import { AuthService } from './auth.service';
+import { JWTAuthGuard } from '../common/guards';
+import { User } from '../common/decorators';
+import { IUserFromTocken } from './types/auth.type';
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -19,6 +22,12 @@ const cookieOptions: CookieOptions = {
 @UseFilters(AllExceptionFilter)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('me')
+  @UseGuards(JWTAuthGuard)
+  async getMe(@User() userFromToken: IUserFromTocken) {
+    return this.authService.getMe(userFromToken);
+  }
 
   @Post('register')
   async signup(@Body() createUserDto: RegisterRequestDto, @Res() res: Response) {

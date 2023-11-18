@@ -2,15 +2,26 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BaseAuthService } from '@services/base-auth.service';
 import { EmailService } from '@services/email.service';
 import { UserService } from '../user/user.service';
-import { ErrorMessages, IUserLogin, IUserRegister, IUserResponse } from './types/auth.type';
+import { ErrorMessages, IUser, IUserFromTocken, IUserLogin, IUserRegister, IUserResponse } from './types/auth.type';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly emailService: EmailService,
-    private readonly baseuserService: BaseAuthService
+    private readonly baseAuthService: BaseAuthService
   ) {}
+
+  async getMe(userFromToken: IUserFromTocken): Promise<IUser & { accessToken: string }> {
+    const { token: accessToken } = await this.baseAuthService.generateAccessToken({
+      id: userFromToken.id,
+      email: userFromToken.email,
+      role: userFromToken.role
+    });
+
+    const user = await this.userService.user({ email: userFromToken.email });
+    return { ...user, accessToken };
+  }
 
   async registerUser({ redirectUri, email, password }: IUserRegister) {
     const userIsExistWithThisEmail = await this.userService.userIsExist({ email });
@@ -19,7 +30,7 @@ export class AuthService {
       throw new HttpException(ErrorMessages.USER_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     }
 
-    const { token } = await this.baseuserService.generateAccessToken({
+    const { token } = await this.baseAuthService.generateAccessToken({
       password,
       email
     });
@@ -35,16 +46,16 @@ export class AuthService {
   }
 
   async verifyEmail(authToken: string): Promise<IUserResponse> {
-    const { email, password } = await this.baseuserService.verifyToken<IUserLogin>(authToken);
+    const { email, password } = await this.baseAuthService.verifyToken<IUserLogin>(authToken);
 
     const user = await this.userService.createUser({ email, password });
 
-    const { token: accessToken } = await this.baseuserService.generateAccessToken({
+    const { token: accessToken } = await this.baseAuthService.generateAccessToken({
       id: user.id,
       email: user.email,
       role: user.role
     });
-    const { token: refreshToken } = await this.baseuserService.generateRefreshToken({
+    const { token: refreshToken } = await this.baseAuthService.generateRefreshToken({
       id: user.id,
       email: user.email,
       role: user.role
@@ -56,7 +67,7 @@ export class AuthService {
   async loginUser(loginUser: IUserLogin): Promise<IUserResponse> {
     const user = await this.userService.verifyUser(loginUser);
 
-    const { accessToken, refreshToken } = await this.baseuserService.generateTokens({
+    const { accessToken, refreshToken } = await this.baseAuthService.generateTokens({
       id: user.id,
       email: user.email,
       role: user.role
@@ -66,9 +77,9 @@ export class AuthService {
   }
 
   async refreshToken(token: string): Promise<string> {
-    const { id, email, role } = await this.baseuserService.verifyToken<{ id: string; email: string; role: string }>(token);
+    const { id, email, role } = await this.baseAuthService.verifyToken<{ id: string; email: string; role: string }>(token);
 
-    const { token: accessToken } = await this.baseuserService.generateAccessToken({ id, email, role });
+    const { token: accessToken } = await this.baseAuthService.generateAccessToken({ id, email, role });
 
     return accessToken;
   }
