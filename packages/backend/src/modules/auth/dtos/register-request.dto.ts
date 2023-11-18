@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator';
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { EMAIL_MATCH, PASSWORD_MATCH } from '../../common/constants';
 
 export class RegisterRequestDto {
@@ -19,9 +19,4 @@ export class RegisterRequestDto {
   @IsString()
   @IsNotEmpty()
   redirectUri: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  invitedBy: string;
 }

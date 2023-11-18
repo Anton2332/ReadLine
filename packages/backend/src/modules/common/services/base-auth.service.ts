@@ -11,7 +11,7 @@ export class BaseAuthService {
     try {
       const accessToken = this.jwtService.sign(payload, {
         privateKey: process.env.JWT_SECRET,
-        expiresIn: '1h'
+        expiresIn: '2h'
       });
 
       return { token: accessToken };
@@ -24,7 +24,7 @@ export class BaseAuthService {
     try {
       const refreshToken = this.jwtService.sign(payload, {
         privateKey: process.env.JWT_SECRET,
-        expiresIn: '14d'
+        expiresIn: '15d'
       });
 
       return { token: refreshToken };

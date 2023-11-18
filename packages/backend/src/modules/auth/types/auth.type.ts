@@ -1,21 +1,27 @@
-export interface IUserInvitedBy {
+export interface IUserLogin {
   email: string;
   password: string;
-  invitedBy?: string;
 }
 
-export interface IUserResponse {
+export interface IUserFromTocken {
   id: string;
   email: string;
   role: string;
-  setupStep: number | null;
 }
 
-export interface IUser extends IUserResponse {
+export interface IUser extends IUserFromTocken {
+  nickname: string;
+  avater?: string;
   createdAt: Date;
-  updateAt: Date;
-  sectors?: string[];
-  companies?: string[];
+}
+
+export interface IUserRegister extends IUserLogin {
+  redirectUri: string;
+}
+
+export interface IUserResponse extends IUser {
+  accessToken: string;
+  refreshToken: string;
 }
 
 export enum ErrorMessages {
