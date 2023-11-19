@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BaseAuthService } from '@services/base-auth.service';
 import { EmailService } from '@services/email.service';
 import { UserService } from '../user/user.service';
-import { ErrorMessages, IUser, IUserFromTocken, IUserLogin, IUserRegister, IUserResponse } from './types/auth.type';
+import { ErrorMessages, IUser, IUserFromTocken, IUserLogin, IUserRegister, IUserRegisterForToken, IUserResponse } from './types/auth.type';
 
 @Injectable()
 export class AuthService {
@@ -46,9 +46,9 @@ export class AuthService {
   }
 
   async verifyEmail(authToken: string): Promise<IUserResponse> {
-    const { email, password } = await this.baseAuthService.verifyToken<IUserLogin>(authToken);
+    const { email, password } = await this.baseAuthService.verifyToken<IUserRegisterForToken>(authToken);
 
-    const user = await this.userService.createUser({ email, password });
+    const user = await this.userService.createUser({ email, password, birthday: new Date() });
 
     const { token: accessToken } = await this.baseAuthService.generateAccessToken({
       id: user.id,

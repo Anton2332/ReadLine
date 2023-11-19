@@ -19,4 +19,9 @@ export class RegisterRequestDto {
   @IsString()
   @IsNotEmpty()
   redirectUri: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  birthday: string;
 }

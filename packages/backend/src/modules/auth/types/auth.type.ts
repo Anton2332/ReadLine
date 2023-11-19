@@ -15,7 +15,11 @@ export interface IUser extends IUserFromTocken {
   createdAt: Date;
 }
 
-export interface IUserRegister extends IUserLogin {
+export interface IUserRegisterForToken extends IUserLogin {
+  birthday: Date;
+}
+
+export interface IUserRegister extends IUserRegisterForToken {
   redirectUri: string;
 }
 

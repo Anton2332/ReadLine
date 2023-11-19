@@ -31,7 +31,9 @@ export class AuthController {
 
   @Post('register')
   async signup(@Body() createUserDto: RegisterRequestDto, @Res() res: Response) {
-    await this.authService.registerUser(createUserDto);
+    const { birthday, ...rest } = createUserDto;
+    const newBirthday = new Date(birthday);
+    await this.authService.registerUser({ ...rest, birthday: newBirthday });
 
     res.status(200).end();
   }
@@ -47,7 +49,10 @@ export class AuthController {
 
     res.cookie(COOKIE_TOKEN_KEY, refreshToken, cookieOptions);
 
-    return { ...rest, refreshToken };
+    res
+      .status(200)
+      .json({ ...rest, refreshToken })
+      .end();
   }
 
   @Get('refresh')
