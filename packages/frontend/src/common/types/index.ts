@@ -150,5 +150,3 @@ export interface IErrorResponse {
   statusCode: number;
   message: string;
 }
-
-export * from './idea.type';

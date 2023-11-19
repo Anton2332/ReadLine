@@ -1,6 +1,5 @@
 import { deleteCookie } from 'cookies-next';
 import { HttpService } from './http.service';
-import { IUser, IUserPayload } from '@/common/types/user.type';
 import {
   IPasswordlessRequestPayload,
   IPasswordlessSendCodePayload,
@@ -11,6 +10,7 @@ import {
 } from '@/common/types/auth.type';
 import { HEADERS_KEYS, STORAGE_KEYS } from '@/common/consts/app-keys.const';
 import { axiosInstance } from '@/common/services/axios';
+import { IUser, IUserPayload } from '../types/user.type';
 
 class AuthService extends HttpService {
   constructor() {

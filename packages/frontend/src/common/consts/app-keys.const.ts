@@ -15,5 +15,7 @@ export const QUERY_KEYS = {
 
 export const ROUTER_KEYS = {
   ROOT: '/',
-  AUTH: '/auth'
+  AUTH: '/auth',
+  SIGNIN: '/signin',
+  SIGNUP: '/signup'
 };

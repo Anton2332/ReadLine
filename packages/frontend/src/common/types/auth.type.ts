@@ -1,4 +1,4 @@
-import { IUser } from '@/common/types/user.type';
+import { IUser } from './user.type';
 
 export enum Role {
   CUSTOMER = 'CUSTOMER',
@@ -15,6 +15,7 @@ export interface IRegisterUserPayload {
   email: string;
   password: string;
   redirectUri: string;
+  birthday: Date;
 }
 
 export interface IGetMe {
