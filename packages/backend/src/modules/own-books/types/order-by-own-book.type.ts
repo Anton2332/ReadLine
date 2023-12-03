@@ -1,0 +1,6 @@
+export enum OrderByOwnBookEnum {
+  LAST_OPEN = 'LAST_OPEN',
+  FIRST_OPEN = 'FIRST_OPEN',
+  LAST_CREATED = 'LAST_CREATED',
+  FIRST_CREATED = 'FIRST_CREATED'
+}

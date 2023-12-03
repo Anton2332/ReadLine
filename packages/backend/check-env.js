@@ -16,7 +16,8 @@ const envSchema = {
   EMAIL_USER: Joi.string().required(),
   EMAIL_PASSWORD: Joi.string().required(),
   ALGOLIA_APLICATION_ID: Joi.string().required(),
-  ALGOLIA_API_KEY: Joi.string().required()
+  ALGOLIA_API_KEY: Joi.string().required(),
+  AWS_S3_REGION: Joi.string().required()
 };
 
 const envVariables = process.env;

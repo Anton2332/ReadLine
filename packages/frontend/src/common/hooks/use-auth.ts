@@ -21,14 +21,16 @@ export const useAuth = () => {
 
   useEffect(() => {
     const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-    if (!token) {
+    if (!token && user) {
       authService.refreshAccessToken();
     }
 
     if (!user && token) getMe();
   }, [user]);
-
-  return { isUserLoading, user: user ?? data };
+  return {
+    user: user ?? data,
+    isUserLoading
+  };
 };
 
 export const useVerifyAccount = () => {
@@ -64,3 +66,13 @@ export const useRegisterAccount = (onSuccess?: () => void, onError?: (err: unkno
     onSuccess,
     onError
   });
+
+export const useLogout = () => {
+  const queryClient = useQueryClient();
+  return useMutation([], () => authService.logout(), {
+    onSuccess: () => {
+      queryClient.setQueryData([QUERY_KEYS.USER], undefined);
+      queryClient.invalidateQueries([QUERY_KEYS.USER]);
+    }
+  });
+};

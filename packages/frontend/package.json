@@ -24,6 +24,7 @@
     "axios": "^0.27.2",
     "cookies-next": "^2.1.1",
     "dotenv": "^16.0.3",
+    "epubjs": "^0.3.93",
     "eslint": "8.50.0",
     "eslint-config-next": "13.5.4",
     "joi": "^17.6.0",

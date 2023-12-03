@@ -84,7 +84,9 @@ export const SignUpComponent = () => {
           <p>Sign up with email</p>
           <input type="email" placeholder="Email" {...register('email')} />
           <input type="password" placeholder="Password" {...register('password')} />
-          <button type="submit">{registerIsLoading ? <Loader width={12} height={12} borderSize={2} /> : <p>Sign up</p>}</button>
+          <button type="submit" disabled={registerIsLoading}>
+            {registerIsLoading ? <Loader width={12} height={12} borderSize={2} /> : <p>Sign up</p>}
+          </button>
         </Styled.AuthEmailChoiceForm>
       )}
     </>

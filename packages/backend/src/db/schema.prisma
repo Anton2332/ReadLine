@@ -59,9 +59,49 @@ model user {
   userToGroup    userToGroup[]
   history        history[]
   viewingHistory viewingHistory[]
+  ownFile        ownFile[]
 
   @@map("users")
 }
+
+model ownFile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  author        String?
+  imageUrl      String?  @map("image_url")
+  contentType   fileType @map("content_type")
+  contentUrl    String?  @map("content_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+  lastOpenDate  DateTime @default(now()) @map("last_open_date")
+  locationIndex String?  @map("location_index")
+
+  userId String @db.ObjectId
+  user   user   @relation(fields: [userId], references: [id])
+}
+
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
+// 1
 
 model group {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
