@@ -22,6 +22,7 @@ export interface IOwnBook {
 }
 
 export interface IUpdateOwnBook {
+  id: string;
   title?: string;
   author?: string;
   image?: File;

@@ -3,7 +3,7 @@ import { QUERY_KEYS } from '../consts/app-keys.const';
 import { ownBooksService } from '../services';
 import { IOwnBook, IUpdateOwnBook, IUploadOwnBook, OrderByOwnBookEnum } from '../types/own-books.type';
 
-export const useOwnBookById = (id: string) => useQuery([QUERY_KEYS.OWN_BOOK, id], () => ownBooksService.getById(id));
+export const useOwnBookById = (id?: string) => useQuery([QUERY_KEYS.OWN_BOOK, id], () => (id ? ownBooksService.getById(id) : null));
 
 export const useUpdateLocationIndexInOwnBook = (id: string) =>
   useMutation([QUERY_KEYS.UPDATE_LOCATION_OWN_BOOK, id], (locationIndex: string) =>
@@ -113,10 +113,11 @@ export const useDeleteOwnBook = ({ orderBy }: { orderBy: OrderByOwnBookEnum }) =
   });
 };
 
-export const useUpdateOwnBook = ({ orderBy }: { orderBy: OrderByOwnBookEnum }) => {
+export const useUpdateOwnBook = ({ orderBy, onSuccess }: { orderBy: OrderByOwnBookEnum; onSuccess: () => void }) => {
   const { updateBook } = useAllOwnBooks({ orderBy });
   return useMutation((data: IUpdateOwnBook) => ownBooksService.updateOwnBook(data), {
     onSuccess: (data) => {
+      onSuccess();
       if (!data) return;
       updateBook(data);
     }

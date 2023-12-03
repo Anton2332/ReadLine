@@ -75,5 +75,5 @@ export const SettingsButton = styled(Button)`
 
 export const TreeDots = styled(Image)`
   width: 16px;
-  height: 6px;
+  height: auto;
 `;

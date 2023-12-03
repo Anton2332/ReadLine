@@ -13,6 +13,7 @@ export const OwnBooksComponent = () => {
   const { id } = query;
 
   const [open, setOpen] = useState(false);
+  const [idInModal, setIdInModal] = useState<string | undefined>(undefined);
   const [orderBy, setOrderBy] = useState(OrderByOwnBookEnum.LAST_OPEN);
 
   const openModal = () => {
@@ -21,10 +22,16 @@ export const OwnBooksComponent = () => {
 
   const closeModal = () => {
     setOpen(false);
+    setIdInModal(undefined);
   };
 
   const handleChangeOrderBy = (event: SelectChangeEvent<unknown>) => {
     setOrderBy(event.target.value as OrderByOwnBookEnum);
+  };
+
+  const handleOpenUpdateModal = (itemId: string) => {
+    setIdInModal(itemId);
+    setOpen(true);
   };
   return (
     <Styled.OwnBooksWrapper>
@@ -52,8 +59,8 @@ export const OwnBooksComponent = () => {
               <p>Add new</p>
             </button>
           </Styled.PageTitleWraper>
-          <AddOwnBookModalComponent open={open} orderBy={orderBy} closeHandler={closeModal} />
-          <AllOwnBooksComponent orderBy={orderBy} />
+          <AddOwnBookModalComponent id={idInModal} open={open} orderBy={orderBy} closeHandler={closeModal} />
+          <AllOwnBooksComponent handleOpenUpdateModal={handleOpenUpdateModal} orderBy={orderBy} />
         </>
       )}
       {id && <ReadBookComponent id={id?.toString()} />}

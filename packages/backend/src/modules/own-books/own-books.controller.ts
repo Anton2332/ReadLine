@@ -11,6 +11,8 @@ import { OWN_BOOKS_TAKE_COUNT } from './own-books.const';
 import { CreateOwnBookFileRequestDto } from './dtos/create-own-book-file.dto';
 import { UpdateLocationIndexRequestDto } from './dtos/update-location-own-book.dto';
 import { PaginationQueryParamsDto } from './dtos/pagination-query-param.dto';
+import { UpdateOwnBookRequestDto } from './dtos/update-own-book.dto';
+import { UpdateOwnBookFileRequestDto } from './dtos/update-own-book-file.dto';
 
 @Controller('own-books')
 @UseGuards(JWTAuthGuard)
@@ -41,18 +43,18 @@ export class OwnBooksController {
     return this.ownBookService.updateOne({ where: { id }, data: { locationIndex: data.locationIndex } });
   }
 
-  @Put(':id')
+  @Put('update/:id')
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'book', maxCount: 1 },
       { name: 'image', maxCount: 1 }
     ])
   )
-  async updateOwnBook(@Param('id') id: string, @Body() body: CreateOwnBookRequestDto, @UploadedFiles() files: CreateOwnBookFileRequestDto) {
+  async updateOwnBook(@Param('id') id: string, @Body() body: UpdateOwnBookRequestDto, @UploadedFiles() files: UpdateOwnBookFileRequestDto) {
     const ownBook = await this.ownBookService.getOne({ id });
 
-    const book = files.book[0];
-    const image = files.image[0];
+    const book = files.book?.at(0);
+    const image = files.image?.at(0);
 
     let contentUrl;
     if (book) {

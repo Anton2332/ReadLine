@@ -8,9 +8,10 @@ import { OrderByOwnBookEnum } from '@/common/types/own-books.type';
 
 interface AllOwnBooksProps {
   orderBy: OrderByOwnBookEnum;
+  handleOpenUpdateModal: (id: string) => void;
 }
 
-export const AllOwnBooksComponent = ({ orderBy }: AllOwnBooksProps) => {
+export const AllOwnBooksComponent = ({ orderBy, handleOpenUpdateModal }: AllOwnBooksProps) => {
   const { ref: loadingInViewRef, inView: isLoadingInView } = useInView({
     threshold: 0.1
   });
@@ -49,6 +50,12 @@ export const AllOwnBooksComponent = ({ orderBy }: AllOwnBooksProps) => {
     handleClose();
   };
 
+  const onClickByUpdateButton = async () => {
+    if (!inPopoverObject) return;
+    handleOpenUpdateModal(inPopoverObject.id);
+    handleClose();
+  };
+
   return (
     <Styled.AllOwnBooksWrapper>
       {allBooks?.map((book) => <OwnBookCardComponent handleClick={handleClick} key={`card-id-${book.id}`} book={book} />)}
@@ -61,7 +68,7 @@ export const AllOwnBooksComponent = ({ orderBy }: AllOwnBooksProps) => {
           horizontal: 'left'
         }}
       >
-        <Button>Update</Button>
+        <Button onClick={onClickByUpdateButton}>Update</Button>
         <Button color="error" onClick={onClickByDeleteButton}>
           delete
         </Button>

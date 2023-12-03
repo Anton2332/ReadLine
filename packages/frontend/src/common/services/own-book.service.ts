@@ -42,7 +42,8 @@ class OwnBooksService extends EnhancedWithAuthHttpService {
       formData.append('author', data.author);
     }
     formData.append('contentType', data.contentType);
-    return this.post<IOwnBook, FormData>('own-books', formData, {
+
+    return this.put<IOwnBook, FormData>(`own-books/update/${data.id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
