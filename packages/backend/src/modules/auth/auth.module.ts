@@ -3,11 +3,11 @@ import { AuthService } from './auth.service';
 import { PrismaModule } from '../../db/prisma.module';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
-  providers: [AuthService],
+  providers: [{ provide: 'AuthService', useClass: AuthService }, GoogleStrategy],
   controllers: [AuthController],
-  imports: [PrismaModule, UserModule],
-  exports: [AuthService]
+  imports: [PrismaModule, UserModule]
 })
 export class AuthModule {}

@@ -132,7 +132,7 @@ export const AddOwnBookModalComponent = ({ id, open, orderBy, closeHandler }: Ad
       <Styled.AddOwnBookWrapper>
         <Styled.FileInput ref={bookRef} type="file" id="epubFile" accept=".epub" onChange={handleEpubFileChange} disabled={isLoading} />
         <Styled.CustomButton variant={book || findBook?.contentUrl ? 'contained' : 'outlined'} onClick={() => bookRef?.current?.click()}>
-          {book || findBook?.contentUrl ? 'The file is selected' : 'Select a file'}
+          {book || findBook?.contentUrl ? 'Change book' : 'Select book'}
         </Styled.CustomButton>
         {(book || findBook?.contentUrl) && (
           <>
@@ -142,7 +142,7 @@ export const AddOwnBookModalComponent = ({ id, open, orderBy, closeHandler }: Ad
             <Input placeholder="Fill Author" type="text" id="author" value={author} onChange={handleAuthorChange} />
             <Styled.FileInput ref={imageRef} type="file" id="photo" accept="image/*" onChange={handlePhotoChange} />
             <Styled.CustomButton variant={imageUrl ? 'contained' : 'outlined'} onClick={() => imageRef?.current?.click()}>
-              {imageUrl ? 'The photo is selected' : 'Select a photo'}
+              {imageUrl ? 'Change cover' : 'Select cover'}
             </Styled.CustomButton>
             Preview photo:
             <img src={imageUrl} alt="Cover" />

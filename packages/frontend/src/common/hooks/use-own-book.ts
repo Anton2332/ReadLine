@@ -5,11 +5,6 @@ import { IOwnBook, IUpdateOwnBook, IUploadOwnBook, OrderByOwnBookEnum } from '..
 
 export const useOwnBookById = (id?: string) => useQuery([QUERY_KEYS.OWN_BOOK, id], () => (id ? ownBooksService.getById(id) : null));
 
-export const useUpdateLocationIndexInOwnBook = (id: string) =>
-  useMutation([QUERY_KEYS.UPDATE_LOCATION_OWN_BOOK, id], (locationIndex: string) =>
-    ownBooksService.updateLocationIndexById({ id, locationIndex })
-  );
-
 export const useAllOwnBooks = ({ orderBy }: { orderBy: OrderByOwnBookEnum }) => {
   const queryClient = useQueryClient();
   const { data: books } = useQuery([QUERY_KEYS.PAGET_OWN_BOOKS, orderBy], () =>
@@ -90,6 +85,20 @@ export const useFetchOwnBooks = ({ orderBy }: { orderBy: OrderByOwnBookEnum }) =
     fetchNextPageList: fetchNextPage,
     refetchList: refetch
   };
+};
+
+export const useUpdateLocationIndexInOwnBook = ({ orderBy, id }: { orderBy: OrderByOwnBookEnum; id: string }) => {
+  const { updateBook } = useAllOwnBooks({ orderBy });
+  return useMutation(
+    [QUERY_KEYS.UPDATE_LOCATION_OWN_BOOK, id],
+    (locationIndex: string) => ownBooksService.updateLocationIndexById({ id, locationIndex }),
+    {
+      onSuccess: (data) => {
+        if (!data) return;
+        updateBook(data);
+      }
+    }
+  );
 };
 
 export const useUploadOwnBook = ({ orderBy, onSuccess }: { orderBy: OrderByOwnBookEnum; onSuccess: () => void }) => {

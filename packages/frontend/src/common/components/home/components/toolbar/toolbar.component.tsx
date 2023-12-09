@@ -6,7 +6,8 @@ import { ToolbarList } from './toolbar.const';
 import { useAuth, useLogout } from '@/common/hooks';
 
 export const ToolbarComponent = () => {
-  const { push, pathname } = useRouter();
+  const { push, pathname, query } = useRouter();
+  const { id } = query;
   const { user, isUserLoading } = useAuth();
   const { mutateAsync, isLoading } = useLogout();
   const oncClickByLogIn = () => {
@@ -28,7 +29,7 @@ export const ToolbarComponent = () => {
               return null;
             }
             return (
-              <Styled.ToolbarListItem key={`link-${path}`} href={path} isactive={`${path === pathname}`}>
+              <Styled.ToolbarListItem key={`link-${path}`} href={path} isactive={`${path === pathname && !id}`}>
                 {title}
               </Styled.ToolbarListItem>
             );

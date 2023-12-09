@@ -22,6 +22,8 @@ export const OwnBookCardComponent = ({ book, handleClick }: IOwnBookCardProps) =
     handleClick(e, book.id, book.title);
   };
 
+  const progress = Math.round(+(book.locationIndex ?? 0) * 100);
+
   return (
     <Styled.OwnBookCardWrapper onClick={onClickByCard}>
       <Styled.SettingsButton onClick={onClickBySettingsButton}>
@@ -29,6 +31,10 @@ export const OwnBookCardComponent = ({ book, handleClick }: IOwnBookCardProps) =
       </Styled.SettingsButton>
       {book.imageUrl ? <img src={book.imageUrl} alt={book.title} /> : <div />}
       <span>{book.title}</span>
+      <p>{book.author}</p>
+      <Styled.ProgressBarWrapper progress={progress}>
+        <div />
+      </Styled.ProgressBarWrapper>
     </Styled.OwnBookCardWrapper>
   );
 };

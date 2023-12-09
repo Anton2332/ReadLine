@@ -7,6 +7,7 @@ import { ReadBookComponent } from '../read-book';
 import { AllOwnBooksComponent } from './components/all-own-books';
 import { AddOwnBookModalComponent } from '../all-modals';
 import { OrderByOwnBookEnum } from '@/common/types/own-books.type';
+import { PageWrapperComponent } from '../page-wrapper';
 
 export const OwnBooksComponent = () => {
   const { query } = useRouter();
@@ -34,36 +35,37 @@ export const OwnBooksComponent = () => {
     setOpen(true);
   };
   return (
-    <Styled.OwnBooksWrapper>
+    <PageWrapperComponent>
       <ToolbarComponent />
+      <Styled.OwnBooksWrapper>
+        {!id && (
+          <>
+            <Styled.PageTitleWraper>
+              <h3>Its your books</h3>
+              <span>
+                You can add your own books on this page.
+                <br />
+                To read further and track progress.
+                <br />
+                Only you can see them.
+              </span>
 
-      {!id && (
-        <>
-          <Styled.PageTitleWraper>
-            <h3>Its your books</h3>
-            <span>
-              You can add your own books on this page.
-              <br />
-              To read further and track progress.
-              <br />
-              Only you can see them.
-            </span>
-
-            <Styled.CustomizeSelectFromMUI value={orderBy} onChange={(e) => handleChangeOrderBy(e)}>
-              <MenuItem value={OrderByOwnBookEnum.LAST_OPEN}>Last Open</MenuItem>
-              <MenuItem value={OrderByOwnBookEnum.FIRST_OPEN}>First Open</MenuItem>
-              <MenuItem value={OrderByOwnBookEnum.LAST_CREATED}>Last Created</MenuItem>
-              <MenuItem value={OrderByOwnBookEnum.FIRST_CREATED}>First Created</MenuItem>
-            </Styled.CustomizeSelectFromMUI>
-            <button type="button" onClick={openModal}>
-              <p>Add new</p>
-            </button>
-          </Styled.PageTitleWraper>
-          <AddOwnBookModalComponent id={idInModal} open={open} orderBy={orderBy} closeHandler={closeModal} />
-          <AllOwnBooksComponent handleOpenUpdateModal={handleOpenUpdateModal} orderBy={orderBy} />
-        </>
-      )}
-      {id && <ReadBookComponent id={id?.toString()} />}
-    </Styled.OwnBooksWrapper>
+              <Styled.CustomizeSelectFromMUI value={orderBy} onChange={(e) => handleChangeOrderBy(e)}>
+                <MenuItem value={OrderByOwnBookEnum.LAST_OPEN}>Last Open</MenuItem>
+                <MenuItem value={OrderByOwnBookEnum.FIRST_OPEN}>First Open</MenuItem>
+                <MenuItem value={OrderByOwnBookEnum.LAST_CREATED}>Last Created</MenuItem>
+                <MenuItem value={OrderByOwnBookEnum.FIRST_CREATED}>First Created</MenuItem>
+              </Styled.CustomizeSelectFromMUI>
+              <button type="button" onClick={openModal}>
+                <p>Add new</p>
+              </button>
+            </Styled.PageTitleWraper>
+            <AddOwnBookModalComponent id={idInModal} open={open} orderBy={orderBy} closeHandler={closeModal} />
+            <AllOwnBooksComponent handleOpenUpdateModal={handleOpenUpdateModal} orderBy={orderBy} />
+          </>
+        )}
+        {id && <ReadBookComponent orderBy={orderBy} id={id?.toString()} />}
+      </Styled.OwnBooksWrapper>
+    </PageWrapperComponent>
   );
 };

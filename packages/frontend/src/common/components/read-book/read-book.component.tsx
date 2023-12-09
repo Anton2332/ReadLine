@@ -3,19 +3,27 @@ import ePub, { Book, Rendition } from 'epubjs';
 import * as Styled from './read-book.styled';
 import { useOwnBookById, useUpdateLocationIndexInOwnBook } from '@/common/hooks/use-own-book';
 import { useDebounce } from '@/common/hooks/use-debounce';
+import { OrderByOwnBookEnum } from '@/common/types/own-books.type';
 
 interface IReadBookProps {
   id: string;
+  orderBy: OrderByOwnBookEnum;
 }
-export const ReadBookComponent = ({ id }: IReadBookProps) => {
+export const ReadBookComponent = ({ id, orderBy }: IReadBookProps) => {
+  const [isHasNextSection, setIsHasNextSection] = useState(false);
+  const [isHasPrevSection, setIsHasPrevSection] = useState(false);
   const onClick = () => {};
-  const { data, isLoading } = useOwnBookById(id);
+  const { data, isLoading, refetch, isRefetching } = useOwnBookById(id);
   const ref = useRef<HTMLDivElement | null>(null);
   const renditionRef = useRef<Rendition | null>(null);
   const [locationIndex, setLocatinIndex] = useState<undefined | string>();
   const debouncedLocationIndex = useDebounce<string | undefined>(locationIndex, 2500);
 
-  const { mutateAsync } = useUpdateLocationIndexInOwnBook(id);
+  const { mutateAsync } = useUpdateLocationIndexInOwnBook({ id, orderBy });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   useEffect(() => {
     if (debouncedLocationIndex && data?.locationIndex !== debouncedLocationIndex) {
@@ -24,16 +32,33 @@ export const ReadBookComponent = ({ id }: IReadBookProps) => {
   }, [debouncedLocationIndex]);
   let rendition: Rendition | undefined;
   let book: Book | undefined;
+
+  const handleKeyPress = (e: any) => {
+    const keyPressed = e.key;
+
+    if (keyPressed === 'ArrowLeft') {
+      if (!renditionRef.current) return;
+      renditionRef.current.next();
+      e.preventDefault();
+    } else if (keyPressed === 'ArrowRight') {
+      if (!renditionRef.current) return;
+      renditionRef.current.next();
+      e.preventDefault();
+    }
+  };
+
   useEffect(() => {
-    if (isLoading || !data?.contentUrl || !ref?.current) return;
+    if (isLoading || isRefetching || !data?.contentUrl || !ref?.current || !ePub) return;
+    const height = document.documentElement.scrollHeight;
 
     book = ePub(data.contentUrl);
     rendition = book.renderTo(ref.current, {
       allowScriptedContent: true,
-      manager: 'continuous',
-      flow: 'scrolled',
+      flow: 'paginated',
+      // flow: 'scrolled',
+      spread: 'none',
       width: '100%',
-      height: '100%'
+      height: height - 110
     });
     if (!rendition || !book) return;
     renditionRef.current = rendition;
@@ -45,14 +70,29 @@ export const ReadBookComponent = ({ id }: IReadBookProps) => {
 
     if (!next || !book || !prev) return;
 
-    rendition.on('relocated', (location: { start: { index: number }; end: { index: number } }) => {
-      setLocatinIndex(location.start.index.toString());
+    book.ready
+      .then(() => {
+        const stored = localStorage.getItem(`${book?.key()}-locations`);
+        if (stored) {
+          return book?.locations.load(stored);
+        }
+        return book?.locations.generate(512); // Generates CFI for every X characters (Characters per/page)
+      })
+      .then(() => {
+        localStorage.setItem(`${book?.key()}-locations`, book?.locations.save() ?? '');
+      });
+
+    rendition.on('relocated', (location: { start: { index: number; cfi: string }; end: { index: number; cfi: string } }) => {
+      if (!book) return;
+      const progress = book.locations.percentageFromCfi(location.start.cfi);
+      setLocatinIndex(progress.toString());
     });
 
     prev.addEventListener(
       'click',
       (e) => {
-        rendition?.prev();
+        if (!renditionRef.current) return;
+        renditionRef.current.next();
         e.preventDefault();
       },
       false
@@ -61,61 +101,49 @@ export const ReadBookComponent = ({ id }: IReadBookProps) => {
     next.addEventListener(
       'click',
       (e) => {
-        rendition?.next();
+        if (!renditionRef.current) return;
+        renditionRef.current.next();
         e.preventDefault();
       },
       false
     );
+
+    document.addEventListener('keydown', handleKeyPress);
 
     rendition.on('rendered', (section: any) => {
       const nextSection = section.next();
       const prevSection = section.prev();
 
       if (nextSection) {
-        const nextNav = book?.navigation.get(nextSection.href);
-        let nextLabel: string | undefined;
-        if (nextNav) {
-          nextLabel = nextNav.label;
-        } else {
-          nextLabel = 'next';
-        }
-
-        next.textContent = `${nextLabel} »`;
+        setIsHasNextSection(true);
       } else {
-        next.textContent = '';
+        setIsHasNextSection(false);
       }
 
       if (prevSection) {
-        const prevNav = book?.navigation.get(prevSection.href);
-
-        let prevLabel: string | undefined;
-        if (prevNav) {
-          prevLabel = prevNav.label;
-        } else {
-          prevLabel = 'previous';
-        }
-
-        prev.textContent = `« ${prevLabel}`;
+        setIsHasPrevSection(true);
       } else {
-        prev.textContent = '';
+        setIsHasPrevSection(false);
       }
     });
     return () => {
-      if (renditionRef.current) {
-        renditionRef.current.destroy();
-      }
+      renditionRef.current?.destroy();
+      renditionRef.current = null;
+      book?.destroy();
     };
-  }, [data, isLoading, ref]);
+  }, [data, isLoading, isRefetching, ref, renditionRef]);
 
   return (
     <>
-      <a id="prev" href="#prev" className="navlink">
-        ...
-      </a>
-      <a id="next" href="#next" className="navlink">
-        ...
-      </a>
       <Styled.ReadBookWrapper onClick={onClick} ref={ref} />
+      <Styled.StepButtonWrapper>
+        <button id="prev" type="button" disabled={!isHasPrevSection}>
+          PREV
+        </button>
+        <button id="next" type="button" disabled={!isHasNextSection}>
+          NEXT
+        </button>
+      </Styled.StepButtonWrapper>
     </>
   );
 };

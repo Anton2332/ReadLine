@@ -3,11 +3,6 @@ import styled from 'styled-components';
 
 export const OwnBooksWrapper = styled.div`
   padding-top: 56px;
-  width: 1080px;
-  margin: 0 auto;
-  @media screen and (max-width: 1080px) {
-    width: 100vw;
-  }
 `;
 
 export const PageTitleWraper = styled.div`

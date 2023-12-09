@@ -11,7 +11,8 @@ export const ToolbarWrapper = styled.header`
   align-items: center;
   position: absolute;
   top: 0;
-
+  background-color: white;
+  z-index: 999;
   @media screen and (max-width: 1080px) {
     width: 100vw;
   }

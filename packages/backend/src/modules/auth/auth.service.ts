@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BaseAuthService } from '@services/base-auth.service';
 import { EmailService } from '@services/email.service';
 import { UserService } from '../user/user.service';
@@ -66,6 +66,34 @@ export class AuthService {
 
   async loginUser(loginUser: IUserLogin): Promise<IUserResponse> {
     const user = await this.userService.verifyUser(loginUser);
+
+    const { accessToken, refreshToken } = await this.baseAuthService.generateTokens({
+      id: user.id,
+      email: user.email,
+      role: user.role
+    });
+
+    return { ...user, accessToken, refreshToken };
+  }
+
+  async loginUserWithGoogle(email?: string): Promise<IUserResponse> {
+    if (!email) {
+      throw new BadRequestException('Unauthenticated');
+    }
+
+    const user = await this.userService.user({ email });
+
+    if (!user) {
+      const newBirthday = new Date();
+      const createdUser = await this.userService.createUser({ email, password: 'test', birthday: newBirthday });
+      const { accessToken, refreshToken } = await this.baseAuthService.generateTokens({
+        id: createdUser.id,
+        email: createdUser.email,
+        role: createdUser.role
+      });
+
+      return { ...createdUser, accessToken, refreshToken };
+    }
 
     const { accessToken, refreshToken } = await this.baseAuthService.generateTokens({
       id: user.id,

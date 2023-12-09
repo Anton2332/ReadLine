@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Logger, Post, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { CookieOptions, Request, Response } from 'express';
 import { RegisterRequestDto } from './dtos/register-request.dto';
 import { COOKIE_TOKEN_KEY } from '../common/constants';
@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { JWTAuthGuard } from '../common/guards';
 import { User } from '../common/decorators';
 import { IUserFromTocken } from './types/auth.type';
+// import { GoogleAuthGuard } from './guards/google-oauth.guard';
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
@@ -21,7 +22,27 @@ const cookieOptions: CookieOptions = {
 @UseFilters(HttpExceptionFilter)
 @UseFilters(AllExceptionFilter)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(@Inject('AuthService') private readonly authService: AuthService) {}
+
+  // @Get('google/login')
+  // @UseGuards(GoogleAuthGuard)
+  // async authGoogle() {
+  //   return { msg: 'Google Authentication' };
+  // }
+
+  // @Get('google/callback')
+  // @UseGuards(GoogleAuthGuard)
+  // async googleAuthCallback(@Req() req) {
+  //   const userInfo = await this.authService.loginUserWithGoogle(req.user);
+
+  //   // res.cookie('access_token', token, {
+  //   //   maxAge: 2592000000,
+  //   //   sameSite: true,
+  //   //   secure: false
+  //   // });
+
+  //   return userInfo;
+  // }
 
   @Get('me')
   @UseGuards(JWTAuthGuard)

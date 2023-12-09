@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styled, { css } from 'styled-components';
 
 const imgStyle = css`
-  border-radius: 15px;
+  border-radius: 5px;
   width: 200px;
   height: calc(200px * 1.4);
   @media (max-width: 1080px) {
@@ -26,6 +26,7 @@ export const OwnBookCardWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
   width: calc((100% - 80px) / 5);
+  padding-bottom: 5px;
   @media screen and (max-width: 1080px) {
     width: calc((100% - 60px) / 4);
   }
@@ -54,10 +55,35 @@ export const OwnBookCardWrapper = styled.div`
   & > span {
     color: #767676;
     font-family: Inter;
-    font-size: 12px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
+  }
+
+  & > p {
+    color: #525050;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+  }
+`;
+
+export const ProgressBarWrapper = styled.span<{ progress: number }>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 5px;
+  background-color: #8f8e8e;
+  & > div {
+    width: ${({ progress }) => progress}%;
+    height: 100%;
+    background-color: #4646ee;
+    border-radius: 5px;
   }
 `;
 
