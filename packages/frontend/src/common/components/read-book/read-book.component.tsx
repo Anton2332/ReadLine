@@ -92,7 +92,7 @@ export const ReadBookComponent = ({ id, orderBy }: IReadBookProps) => {
       'click',
       (e) => {
         if (!renditionRef.current) return;
-        renditionRef.current.next();
+        renditionRef.current.prev();
         e.preventDefault();
       },
       false

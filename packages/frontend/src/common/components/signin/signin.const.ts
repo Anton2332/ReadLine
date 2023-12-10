@@ -4,6 +4,8 @@ export const EMAIL_MATCH = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 export const PASSWORD_MATCH = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
 export const PASSWORD_ERROR_TEXT =
   'Password must be a minimum of 8 characters with one of each: uppercase letter; lowercase letter; number; symbol';
+
+export const PASSWORD_REPEAT_ERROR_TEXT = 'Password must repeat';
 export const EMAIL_ERROR_TEXT = 'Invalid email address';
 export const RESET_PASSWORD_TEXT = 'Please check your mail to restore your password';
 export const CONFIRM_REGISTRATION_TEXT = 'Confirm registration via link emailed to you';

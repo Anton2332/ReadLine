@@ -44,9 +44,9 @@ export const SignInComponent = () => {
       {!isEmailChoice && (
         <Styled.AuthChoiceWrapper>
           <p>Log in</p>
-          <Styled.ChocheButton>
+          {/* <Styled.ChocheButton>
             <p>Log in with Google</p>
-          </Styled.ChocheButton>
+          </Styled.ChocheButton> */}
           <Styled.ChocheButton onClick={onClickByEmailChoice}>
             <p>Log in with email</p>
           </Styled.ChocheButton>

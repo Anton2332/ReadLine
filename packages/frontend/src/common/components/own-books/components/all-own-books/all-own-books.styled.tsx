@@ -7,6 +7,7 @@ export const AllOwnBooksWrapper = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   margin-top: 40px;
+  padding: 0 15px;
 `;
 
 export const PopoverCustome = styled(Popover)`

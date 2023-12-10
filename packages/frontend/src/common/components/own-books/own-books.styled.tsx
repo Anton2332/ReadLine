@@ -10,6 +10,7 @@ export const PageTitleWraper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 15px;
   & > h3 {
     margin-top: 20px;
     margin-bottom: 15px;
@@ -27,7 +28,7 @@ export const PageTitleWraper = styled.div`
   & > button {
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 15px;
     padding: 10px 20px;
     border: none;
     cursor: pointer;

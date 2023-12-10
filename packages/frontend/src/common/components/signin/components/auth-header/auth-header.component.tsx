@@ -1,7 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import ReadLineLogo from '@styles/icons/RlineLogo.png';
 import LeftArrow from '@styles/icons/left-arrow-on-auth-header.png';
 import Question from '@styles/icons/question-on-auth-header.png';
+import Image from 'next/image';
 import * as Styled from './auth-header.styled';
 
 interface IAuthHeaderProps {
@@ -14,14 +16,18 @@ export const AuthHeaderComponent = ({ backCallback }: IAuthHeaderProps) => {
     if (backCallback) {
       backCallback();
     }
-    if (!backCallback) {
-      back();
-    }
+    // if (!backCallback) {
+    //   back();
+    // }
   };
   return (
     <Styled.HeaderWrapper>
-      <Styled.ImageWrapper onClick={onClickBack} src={LeftArrow} alt="Left Arrow" />
-      <Styled.ImageWrapper src={Question} alt="Question" />
+      {backCallback ? (
+        <Styled.ImageWrapper onClick={onClickBack} src={LeftArrow} alt="Left Arrow" />
+      ) : (
+        <Image src={ReadLineLogo} alt="ReadLine" width={40} height={40} />
+      )}
+      {/* <Styled.ImageWrapper src={Question} alt="Question" /> */}
     </Styled.HeaderWrapper>
   );
 };

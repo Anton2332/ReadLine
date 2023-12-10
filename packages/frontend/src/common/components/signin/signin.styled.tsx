@@ -125,9 +125,9 @@ export const AuthEmailChoiceForm = styled.form`
 
   & > span {
     margin-top: 26px;
-    color: #242424;
+    color: #eb5d5d;
     font-family: Inter;
-    font-size: 24px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
     line-height: 32px;

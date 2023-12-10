@@ -9,6 +9,6 @@ export type OrderByOwnBook = {
 export const OrderByOwnBookConst: OrderByOwnBook = {
   [OrderByOwnBookEnum.LAST_OPEN]: { lastOpenDate: 'desc' },
   [OrderByOwnBookEnum.FIRST_OPEN]: { lastOpenDate: 'asc' },
-  [OrderByOwnBookEnum.LAST_CREATED]: { createdAt: 'desc' },
-  [OrderByOwnBookEnum.FIRST_CREATED]: { createdAt: 'asc' }
+  [OrderByOwnBookEnum.FROM_A_TO_Z]: { title: 'asc' },
+  [OrderByOwnBookEnum.FROM_Z_TO_A]: { title: 'desc' }
 };

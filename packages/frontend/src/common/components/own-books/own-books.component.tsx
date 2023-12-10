@@ -8,10 +8,13 @@ import { AllOwnBooksComponent } from './components/all-own-books';
 import { AddOwnBookModalComponent } from '../all-modals';
 import { OrderByOwnBookEnum } from '@/common/types/own-books.type';
 import { PageWrapperComponent } from '../page-wrapper';
+import { useAuth } from '@/common/hooks';
 
 export const OwnBooksComponent = () => {
   const { query } = useRouter();
   const { id } = query;
+
+  useAuth();
 
   const [open, setOpen] = useState(false);
   const [idInModal, setIdInModal] = useState<string | undefined>(undefined);
@@ -53,8 +56,8 @@ export const OwnBooksComponent = () => {
               <Styled.CustomizeSelectFromMUI value={orderBy} onChange={(e) => handleChangeOrderBy(e)}>
                 <MenuItem value={OrderByOwnBookEnum.LAST_OPEN}>Last Open</MenuItem>
                 <MenuItem value={OrderByOwnBookEnum.FIRST_OPEN}>First Open</MenuItem>
-                <MenuItem value={OrderByOwnBookEnum.LAST_CREATED}>Last Created</MenuItem>
-                <MenuItem value={OrderByOwnBookEnum.FIRST_CREATED}>First Created</MenuItem>
+                <MenuItem value={OrderByOwnBookEnum.FROM_A_TO_Z}>From A to Z</MenuItem>
+                <MenuItem value={OrderByOwnBookEnum.FROM_Z_TO_A}>From Z to A</MenuItem>
               </Styled.CustomizeSelectFromMUI>
               <button type="button" onClick={openModal}>
                 <p>Add new</p>

@@ -14,18 +14,27 @@ import { Loader } from '../loader';
 
 const schemaSignUp = Joi.object({
   email: Joi.string().email({ tlds: false }).message(EMAIL_ERROR_TEXT).required(),
-  password: Joi.string().regex(PASSWORD_MATCH).message(PASSWORD_ERROR_TEXT).required()
+  password: Joi.string().regex(PASSWORD_MATCH).message(PASSWORD_ERROR_TEXT).required(),
+  passwordRepeat: Joi.any()
+    .valid(Joi.ref('password'))
+    .label('Repeat Password')
+    .options({ messages: { 'any.only': '{{#label}} does not match' } })
 });
 
 export const SignUpComponent = () => {
   const [isEmailChoice, setIsEmailChoice] = useState(false);
+  const [isClickOnece, setIsClickOnece] = useState(false);
   const [isTimeout, setIsTimeout] = useState(false);
   const { query, push } = useRouter();
 
   const { mutateAsync: verifyAccount } = useVerifyAccount();
   const { mutateAsync: registerAccount, isLoading: registerIsLoading } = useRegisterAccount(() => toast.success('Confirm email are send'));
 
-  const { register, handleSubmit } = useForm<IUserPayload>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<IUserPayload & { passwordRepeat: string }>({
     resolver: joiResolver(schemaSignUp)
   });
 
@@ -66,9 +75,9 @@ export const SignUpComponent = () => {
       {!isEmailChoice && (!query.token || isTimeout) && (
         <Styled.AuthChoiceWrapper>
           <p>Sign up</p>
-          <Styled.ChocheButton>
+          {/* <Styled.ChocheButton>
             <p>Sign up with Google</p>
-          </Styled.ChocheButton>
+          </Styled.ChocheButton> */}
           <Styled.ChocheButton onClick={onClickByEmailChoice}>
             <p>Sign up with email</p>
           </Styled.ChocheButton>
@@ -80,13 +89,20 @@ export const SignUpComponent = () => {
         </Styled.AuthChoiceWrapper>
       )}
       {isEmailChoice && (!query.token || isTimeout) && (
-        <Styled.AuthEmailChoiceForm onSubmit={handleSubmit(onSubmit)}>
+        <Styled.AuthEmailChoiceForm
+          onSubmit={() => {
+            setIsClickOnece(true);
+            handleSubmit(onSubmit);
+          }}
+        >
           <p>Sign up with email</p>
           <input type="email" placeholder="Email" {...register('email')} />
           <input type="password" placeholder="Password" {...register('password')} />
+          <input type="password" placeholder="Repeat Password" {...register('passwordRepeat')} />
           <button type="submit" disabled={registerIsLoading}>
             {registerIsLoading ? <Loader width={12} height={12} borderSize={2} /> : <p>Sign up</p>}
           </button>
+          {isClickOnece && <span>{errors.email?.message ?? errors.password?.message ?? errors.passwordRepeat?.message ?? ''}</span>}
         </Styled.AuthEmailChoiceForm>
       )}
     </>
