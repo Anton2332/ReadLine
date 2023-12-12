@@ -89,12 +89,7 @@ export const SignUpComponent = () => {
         </Styled.AuthChoiceWrapper>
       )}
       {isEmailChoice && (!query.token || isTimeout) && (
-        <Styled.AuthEmailChoiceForm
-          onSubmit={() => {
-            setIsClickOnece(true);
-            handleSubmit(onSubmit);
-          }}
-        >
+        <Styled.AuthEmailChoiceForm onSubmit={handleSubmit(onSubmit)}>
           <p>Sign up with email</p>
           <input type="email" placeholder="Email" {...register('email')} />
           <input type="password" placeholder="Password" {...register('password')} />
@@ -102,7 +97,7 @@ export const SignUpComponent = () => {
           <button type="submit" disabled={registerIsLoading}>
             {registerIsLoading ? <Loader width={12} height={12} borderSize={2} /> : <p>Sign up</p>}
           </button>
-          {isClickOnece && <span>{errors.email?.message ?? errors.password?.message ?? errors.passwordRepeat?.message ?? ''}</span>}
+          <span>{errors.email?.message ?? errors.password?.message ?? errors.passwordRepeat?.message ?? ''}</span>
         </Styled.AuthEmailChoiceForm>
       )}
     </>
