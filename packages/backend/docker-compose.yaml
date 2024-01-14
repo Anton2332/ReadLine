@@ -1,14 +1,12 @@
 version: '3'
 
 services:
-  postgres:
-    image: postgres:alpine
-    restart: always
-    environment:
-      - POSTGRES_DB=verona
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '5438:5432'
+      - 5000:5000
     volumes:
-      - ../../postgres-data:/var/lib/postgresql/data
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
