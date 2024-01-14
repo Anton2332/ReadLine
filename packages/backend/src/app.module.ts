@@ -14,5 +14,6 @@ import { OwnBooksModule } from './modules/own-books/own-books.module';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(...[TrimMiddleware]).forRoutes('/');
+
   }
 }
