@@ -1,0 +1,29 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build-backend:
+    name: Build backend dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Build backend Dockerfile
+        run: cd packages/backend && docker build --build-arg NODE_ENV=dev .
+  build-frontend:
+    name: Build frontend dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Build frontend Dockerfile
+        run: cd packages/frontend && docker build --build-arg APP_ENV=development .
