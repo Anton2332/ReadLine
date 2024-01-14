@@ -7,17 +7,8 @@ const envSchema = {
   PORT: Joi.number().required(),
   // Backend secrets
   SECRET_COOKIE: Joi.string().required(),
-  // Postgres setup
-  POSTGRES_HOST: Joi.string().required(),
-  POSTGRES_PORT_DB: Joi.number().required(),
-  POSTGRES_USER: Joi.string().required(),
-  POSTGRES_PASSWORD: Joi.string().required(),
-  POSTGRES_DB: Joi.string().required(),
   EMAIL_USER: Joi.string().required(),
-  EMAIL_PASSWORD: Joi.string().required(),
-  ALGOLIA_APLICATION_ID: Joi.string().required(),
-  ALGOLIA_API_KEY: Joi.string().required(),
-  AWS_S3_REGION: Joi.string().required()
+  EMAIL_PASSWORD: Joi.string().required()
 };
 
 const envVariables = process.env;
