@@ -21,7 +21,6 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
-    "@algolia/client-search": "^4.19.1",
     "@aws-sdk/client-s3": "^3.454.0",
     "@nestjs-modules/mailer": "^1.9.1",
     "@nestjs/common": "^10.2.10",
