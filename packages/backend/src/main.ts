@@ -26,6 +26,7 @@ async function bootstrap() {
   app.enableCors({ credentials: true, origin: [process.env.FRONTEND_URL, process.env.FRONTEND_ADMIN_URL] });
   console.log(process.env.FRONTEND_URL);
 
+
   app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
   app.use(
