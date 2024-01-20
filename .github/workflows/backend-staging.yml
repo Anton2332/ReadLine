@@ -26,7 +26,8 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-        run: docker build -t read-line-be-image --build-arg FRONTEND_URL=$FRONTEND_URL packeges/backend
+        run: |
+          docker build -t read-line-be-image --build-arg FRONTEND_URL=$FRONTEND_URL packeges/backend
           heroku container:push -a read-line-be web
 
       - name: Realease
