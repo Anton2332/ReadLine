@@ -3,7 +3,10 @@ import { STORAGE_KEYS } from '../consts/app-keys.const';
 import { IErrorResponse, IHttpClient, IHttpConfig, IMap, IResponse } from '../types';
 
 export class HttpService implements IHttpClient {
-  constructor(private fetchingService: IHttpClient, private baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL) {}
+  constructor(
+    private fetchingService: IHttpClient,
+    private baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'https://read-line-be-9d3041272208.herokuapp.com/'
+  ) {}
 
   public createQueryLink(base: string, args: IMap) {
     let url = `${base}?`;
