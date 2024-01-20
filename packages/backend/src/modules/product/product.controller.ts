@@ -8,6 +8,7 @@ export class ProductController {
 
   @Get('all')
   async getAll() {
+    console.log('env', process.env.FRONTEND_URL);
     return this.productService.getMany({});
   }
 
