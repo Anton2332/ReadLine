@@ -23,7 +23,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   app.use(bodyParser.json({ limit: '10mb' }));
 
-  app.enableCors({ credentials: true, origin: [process.env.FRONTEND_URL, process.env.FRONTEND_ADMIN_URL] });
+  app.enableCors({ credentials: true, origin: [process.env.FRONTEND_URL] });
   console.log(process.env.FRONTEND_URL);
 
 
