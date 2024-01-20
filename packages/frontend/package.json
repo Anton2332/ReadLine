@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "load:env": "bash load-env.sh",
-    "prebuild": "yarn load:env",
     "predev": "APP_ENV=development yarn load:env",
     "dev": "yarn check:env && next dev",
     "build": "yarn check:env && next build",

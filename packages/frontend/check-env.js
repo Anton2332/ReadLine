@@ -6,10 +6,7 @@ const envSchema = {
   // Backend URL
   REACT_APP_PORT: Joi.number().required(),
   // Backend secrets
-  NEXT_PUBLIC_BACKEND_URL: Joi.string().required(),
-  SCRAPINGDOG_API_KEY: Joi.string().required(),
-  NEXT_PUBLIC_SHOW_ANSWERS_MIN_VOTES: Joi.string().required(),
-  NEXT_PUBLIC_SHOW_POSTS: Joi.string().required(),
+  NEXT_PUBLIC_BACKEND_URL: Joi.string().required()
 };
 
 const envVariables = process.env;

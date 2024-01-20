@@ -1,15 +1,10 @@
 FROM node:buster as dependencies
 WORKDIR /app
 
-ARG APP_ENV
-
 COPY package.json ./
 COPY tsconfig.json ./tsconfig.json
 COPY src ./src
 COPY public ./public
-COPY load-env.sh ./load-env.sh
-COPY .env.staging ./
-COPY .env.prod ./
 COPY check-env.js ./check-env.js
 
 RUN yarn install --frozen-lockfile
@@ -19,9 +14,7 @@ WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 
-ARG APP_ENV
-
-RUN APP_ENV=${APP_ENV} yarn build
+RUN yarn build
 
 FROM node:lts as runner
 WORKDIR /app
