@@ -132,7 +132,6 @@ export const ReadBookComponent = ({ id, orderBy }: IReadBookProps) => {
       book?.destroy();
     };
   }, [data, isLoading, isRefetching, ref, renditionRef]);
-
   return (
     <>
       <Styled.ReadBookWrapper onClick={onClick} ref={ref} />
