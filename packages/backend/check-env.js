@@ -6,9 +6,7 @@ const envSchema = {
   // Backend URL
   PORT: Joi.number().required(),
   // Backend secrets
-  SECRET_COOKIE: Joi.string().required(),
-  EMAIL_USER: Joi.string().required(),
-  EMAIL_PASSWORD: Joi.string().required()
+  SECRET_COOKIE: Joi.string().required()
 };
 
 const envVariables = process.env;

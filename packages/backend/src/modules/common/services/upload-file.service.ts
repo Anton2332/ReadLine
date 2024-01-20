@@ -2,7 +2,6 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { fileType } from '@prisma/client';
-import Epub from 'epubjs';
 
 @Injectable()
 export class UploadFileService {
@@ -39,12 +38,5 @@ export class UploadFileService {
     );
 
     return `https://${this.configService.getOrThrow('AWS_S3_BUCKET_NAME')}.s3.amazonaws.com/${fileName}`;
-  }
-
-  async extractCover(epubFile: Buffer): Promise<string | null> {
-    const epub = Epub(epubFile);
-    let coverBuffer: string | null = null;
-    coverBuffer = await epub.coverUrl();
-    return coverBuffer;
   }
 }
